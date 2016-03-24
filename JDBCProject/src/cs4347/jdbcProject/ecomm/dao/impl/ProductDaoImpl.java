@@ -2,6 +2,7 @@ package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import cs4347.jdbcProject.ecomm.dao.ProductDAO;
@@ -13,8 +14,11 @@ public class ProductDaoImpl implements ProductDAO
 
 	@Override
 	public Product create(Connection connection, Product product) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		Statement statement = connection.createStatement();
+		String query = String.format("INSERT INTO Product values (%d, '%s', '%s', %d, '%s');", product.getId(), product.getProdName(),
+				product.getProdDescription(), product.getProdCategory(), product.getProdUPC());
+		statement.executeUpdate(query);
+		return product;
 	}
 
 	@Override

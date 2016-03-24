@@ -64,7 +64,7 @@ public class PopulateTables
 			app.addAddress(custMap);
 			app.addCreditCards(custMap);
 			System.out.println("Finished building customers: " + custMap.size());
-			app.insertCustomers(connection, custMap);
+			app.insertCustomers(connection, custMap); 
 			System.out.println("Finished inserting customers");
 
 			Map<Long, Product> products = app.buildProducts();
@@ -73,12 +73,14 @@ public class PopulateTables
 			System.out.println("Finished inserting products");
 
 			List<Purchase> purchases = app.buildPurchases(custMap.values(), products.values().toArray(new Product[0]));
-			System.out.println("Finished building purchases: " + purchases.size());
+			System.out.println("Finished building purchases: " + purchases.size());	
 			app.insertPurchases(connection, purchases);
 			System.out.println("Finished inserting purchases");
 
 			connection.commit();
 			System.out.println("Finished Initializing Database");
+			connection.close();
+			
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

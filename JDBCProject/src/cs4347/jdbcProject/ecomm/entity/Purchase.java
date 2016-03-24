@@ -4,12 +4,22 @@ import java.sql.Date;
 
 public class Purchase
 {
+	private static long purchaseCount = 0;
 	private Long id;
 	private Long customerID;
 	private Long productID;
 	private Date purchaseDate;
 	private double purchaseAmount;
-
+	
+	public Purchase() {
+		this.setId(getCurrId());
+	}
+	
+	private long getCurrId() {
+		purchaseCount++;
+		return purchaseCount;
+	}
+	
 	public Long getCustomerID()
 	{
 		return customerID;

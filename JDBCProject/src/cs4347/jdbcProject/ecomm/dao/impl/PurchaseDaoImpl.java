@@ -2,6 +2,7 @@ package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import cs4347.jdbcProject.ecomm.dao.PurchaseDAO;
@@ -14,8 +15,11 @@ public class PurchaseDaoImpl implements PurchaseDAO
 
 	@Override
 	public Purchase create(Connection connection, Purchase purchase) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		Statement statement = connection.createStatement();
+		String query = String.format("INSERT INTO Purchase values (%d, '%s', %.2f, %d, %d);", purchase.getId(),
+				purchase.getPurchaseDate(), purchase.getPurchaseAmount(), purchase.getCustomerID(), purchase.getProductID());
+		statement.executeUpdate(query);
+		return purchase;
 	}
 
 	@Override
