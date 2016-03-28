@@ -1,6 +1,7 @@
 package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -24,7 +25,9 @@ public class PurchaseDaoImpl implements PurchaseDAO
 
 	@Override
 	public Purchase retrieve(Connection connection, Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
+		Statement statement = connection.createStatement();
+		String query = String.format("SELECT * FROM simple_company.Customer where id = %d", id);
+		ResultSet set = statement.executeQuery(query);
 		return null;
 	}
 

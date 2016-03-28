@@ -28,7 +28,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		Statement statement = connection.createStatement();
 		String query = String.format("SELECT * FROM simple_company.Customer where id = %d;", id);
 		ResultSet set = statement.executeQuery(query);
-		//cast it back to a customer object and return it
+		//cast it back to a customer object and return it	
 		return null;
 	}
 
