@@ -4,7 +4,6 @@ import java.sql.Date;
 
 public class Customer
 {
-	private static long numCustomers = 0; //used to generate unique customer id's
 	private Long id;
 
 	private String firstName;
@@ -14,16 +13,6 @@ public class Customer
 	private String email;
 	private Address address;
 	private CreditCard creditCard;
-
-	public Customer()
-	{
-		this.setId(getCurrId());
-	}
-	
-	private long getCurrId() {
-		numCustomers++;
-		return numCustomers;
-	}
 	
 	public Long getId()
 	{

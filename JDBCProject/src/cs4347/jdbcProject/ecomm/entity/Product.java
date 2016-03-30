@@ -2,21 +2,11 @@ package cs4347.jdbcProject.ecomm.entity;
 
 public class Product
 {
-	static private long productCount = 0;
 	private Long id;
 	private String prodName;
 	private String prodDescription;
 	private int prodCategory;
 	private String prodUPC;
-	
-	public Product() {
-		this.setId(getCurrId());
-	}
-	
-	private long getCurrId() {
-		productCount++;
-		return productCount;
-	}
 	
 	public Long getId()
 	{

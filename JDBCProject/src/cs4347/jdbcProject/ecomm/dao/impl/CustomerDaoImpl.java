@@ -2,6 +2,7 @@ package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,10 +17,14 @@ public class CustomerDaoImpl implements CustomerDAO
 
 	@Override
 	public Customer create(Connection connection, Customer customer) throws SQLException, DAOException {
-		Statement statement = connection.createStatement();
-		String query = String.format("INSERT INTO Customer values(%d, '%s', '%s', '%s', '%s', '%s');", customer.getId(), customer.getFirstName(),
+		String query = String.format("INSERT INTO simple_company.Customer values(NULL, '%s', '%s', '%s', '%s', '%s');", customer.getFirstName(),
 				customer.getLastName(), customer.getGender(), customer.getDob(), customer.getEmail());
-		statement.executeUpdate(query);
+		PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		statement.executeUpdate();
+		ResultSet set = statement.getGeneratedKeys();
+		set.next();
+		int id = set.getInt(1);
+		customer.setId((long) id);
 		return customer;
 	}
 
@@ -28,7 +33,7 @@ public class CustomerDaoImpl implements CustomerDAO
 		Statement statement = connection.createStatement();
 		String query = String.format("SELECT * FROM simple_company.Customer where id = %d;", id);
 		ResultSet set = statement.executeQuery(query);
-		//cast it back to a customer object and return it	
+		
 		return null;
 	}
 

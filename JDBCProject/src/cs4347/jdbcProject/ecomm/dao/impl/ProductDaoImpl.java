@@ -1,6 +1,8 @@
 package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -14,10 +16,14 @@ public class ProductDaoImpl implements ProductDAO
 
 	@Override
 	public Product create(Connection connection, Product product) throws SQLException, DAOException {
-		Statement statement = connection.createStatement();
 		String query = String.format("INSERT INTO Product values (%d, '%s', '%s', %d, '%s');", product.getId(), product.getProdName(),
 				product.getProdDescription(), product.getProdCategory(), product.getProdUPC());
-		statement.executeUpdate(query);
+		PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		statement.executeUpdate();
+		ResultSet set = statement.getGeneratedKeys();
+		set.next();
+		int id = set.getInt(1);
+		product.setId((long) id);
 		return product;
 	}
 

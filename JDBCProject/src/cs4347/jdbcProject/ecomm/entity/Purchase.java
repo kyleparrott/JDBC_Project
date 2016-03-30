@@ -10,16 +10,7 @@ public class Purchase
 	private Long productID;
 	private Date purchaseDate;
 	private double purchaseAmount;
-	
-	public Purchase() {
-		this.setId(getCurrId());
-	}
-	
-	private long getCurrId() {
-		purchaseCount++;
-		return purchaseCount;
-	}
-	
+
 	public Long getCustomerID()
 	{
 		return customerID;

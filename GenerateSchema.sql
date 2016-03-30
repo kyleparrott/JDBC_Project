@@ -1,4 +1,3 @@
-drop database simple_company;
 -- MySQL Workbench Forward Engineering
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -7,7 +6,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Schema simple_company
--- -------sdfsd----------------------------------------------
+-- -----------------------------------------------------
 
 -- -----------------------------------------------------
 -- Schema simple_company
@@ -19,13 +18,12 @@ USE `simple_company` ;
 -- Table `simple_company`.`Product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simple_company`.`Product` (
-  `id` INT NOT NULL,
+  `id` INT NULL AUTO_INCREMENT,
   `prodName` VARCHAR(45) NOT NULL,
   `prodDescription` VARCHAR(200) NULL,
   `prodCategory` INT NOT NULL,
-  `prodUPC` VARCHAR(45) NOT NULL,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  PRIMARY KEY (`id`))
+  `prodUPC` VARCHAR(12) NOT NULL,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -33,13 +31,12 @@ ENGINE = InnoDB;
 -- Table `simple_company`.`Customer`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simple_company`.`Customer` (
-  `id` INT NOT NULL,
+  `id` INT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(45) NOT NULL,
   `lastName` VARCHAR(45) NOT NULL,
   `gender` CHAR(1) NOT NULL,
   `dob` DATE NOT NULL,
   `email` VARCHAR(50) NULL,
-  PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
@@ -48,16 +45,15 @@ ENGINE = InnoDB;
 -- Table `simple_company`.`Purchase`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simple_company`.`Purchase` (
-  `id` INT NOT NULL,
-  `purchaseDate` DATE NOT NULL,
+  `id` INT NULL AUTO_INCREMENT,
+  `purchaseDate` DATETIME NOT NULL,
   `purchaseAmount` DECIMAL(8,2) NOT NULL,
   `customerId` INT NOT NULL,
   `productId` INT NOT NULL,
-  PRIMARY KEY (`id`, `productId`, `customerId`),
-  INDEX `fk_Purchase_Customer_idx` (`customerId` ASC),
-  INDEX `fk_Purchase_Product1_idx` (`productId` ASC),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  CONSTRAINT `fk_Purchase_Customer`
+  INDEX `fk_Purchase_Customer1_idx` (`customerId` ASC),
+  INDEX `fk_Purchase_Product1_idx` (`productId` ASC),
+  CONSTRAINT `fk_Purchase_Customer1`
     FOREIGN KEY (`customerId`)
     REFERENCES `simple_company`.`Customer` (`id`)
     ON DELETE NO ACTION
@@ -100,7 +96,8 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`Address` (
   `zipcode` VARCHAR(10) NOT NULL,
   `customerId` INT NOT NULL,
   PRIMARY KEY (`customerId`),
-  CONSTRAINT `fk_Address_Customer1`
+  INDEX `fk_Address_Customer_idx` (`customerId` ASC),
+  CONSTRAINT `fk_Address_Customer`
     FOREIGN KEY (`customerId`)
     REFERENCES `simple_company`.`Customer` (`id`)
     ON DELETE NO ACTION
