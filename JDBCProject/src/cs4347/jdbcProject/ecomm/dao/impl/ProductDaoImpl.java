@@ -29,14 +29,28 @@ public class ProductDaoImpl implements ProductDAO
 
 	@Override
 	public Product retrieve(Connection connection, Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		Statement statement = connection.createStatement();
+		String query = String.format("SELECT * FROM simple_company.Product where id = %d", id);
+		ResultSet set = statement.executeQuery(query);		
+		set.next();
+		Product result = new Product();		
+		result.setProdUPC(set.getString("prodUPC"));
+		result.setId((long) set.getInt("id"));
+		result.setProdCategory(set.getInt("prodCategory"));
+		result.setProdName(set.getString("prodName"));
+		result.setProdDescription(set.getString("prodDescription"));
+		return result;
 	}
 
 	@Override
 	public int update(Connection connection, Product product) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		Statement statement = connection.createStatement();
+		String query = String.format("UPDATE Product SET id = %d, prodCategory = %d, prodName = '%s', prodDescription = '%s', prodUPC = %d WHERE id = %d", 
+				product.getId(), product.getProdCategory(), product.getProdName(), product.getProdDescription(), product.getProdUPC());
+		System.out.println("update query: " + query);
+		int numRows = statement.executeUpdate(query);
+		connection.commit();
+		return numRows;
 	}
 
 	@Override

@@ -1,10 +1,8 @@
 package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -118,7 +116,6 @@ public class PurchaseDaoImpl implements PurchaseDAO
 		System.out.println("Sql: " + query);
 		ResultSet resSet = statement.executeQuery(query);
 
-		ArrayList<Float> amounts = new ArrayList<Float>();
 		float total = 0,
 			  min = Float.MAX_VALUE,
 			  max = 0,

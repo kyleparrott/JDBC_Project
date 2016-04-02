@@ -1,6 +1,5 @@
-drop database if exists simple_company;
 -- MySQL Workbench Forward Engineering
-
+drop database simple_company;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -57,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`Purchase` (
   CONSTRAINT `fk_Purchase_Customer1`
     FOREIGN KEY (`customerId`)
     REFERENCES `simple_company`.`Customer` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Purchase_Product1`
     FOREIGN KEY (`productId`)
@@ -81,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`CreditCard` (
   CONSTRAINT `fk_CreditCard_Customer1`
     FOREIGN KEY (`customerId`)
     REFERENCES `simple_company`.`Customer` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -101,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`Address` (
   CONSTRAINT `fk_Address_Customer`
     FOREIGN KEY (`customerId`)
     REFERENCES `simple_company`.`Customer` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
