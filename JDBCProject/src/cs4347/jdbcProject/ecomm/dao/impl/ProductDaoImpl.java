@@ -17,9 +17,11 @@ public class ProductDaoImpl implements ProductDAO
 
 	@Override
 	public Product create(Connection connection, Product product) throws SQLException, DAOException {
+		if (product.getId() != null){
+			throw new DAOException("Non-null product ID");
+		}
 		String query = String.format("INSERT INTO simple_company.Product values (%d, '%s', '%s', %d, '%s');", product.getId(), product.getProdName(),
 				product.getProdDescription(), product.getProdCategory(), product.getProdUPC());
-		System.out.println("createsql: " + query);
 		PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		statement.executeUpdate();
 		ResultSet set = statement.getGeneratedKeys();
@@ -32,32 +34,38 @@ public class ProductDaoImpl implements ProductDAO
 	public Product retrieve(Connection connection, Long id) throws SQLException, DAOException {
 		Statement statement = connection.createStatement();
 		String query = String.format("SELECT * FROM simple_company.Product where id = %d", id);
-		ResultSet set = statement.executeQuery(query);		
-		set.next();
-		Product result = new Product();		
-		result.setProdUPC(set.getString("prodUPC"));
-		result.setId(set.getLong("id"));
-		result.setProdCategory(set.getInt("prodCategory"));
-		result.setProdName(set.getString("prodName"));
-		result.setProdDescription(set.getString("prodDescription"));
-		return result;
+		System.out.println("query: " + query);
+		ResultSet set = statement.executeQuery(query);
+		if (!set.next()) { //Null result set
+			 return null;
+		} else {
+			Product result = new Product();		
+			result.setProdUPC(set.getString("prodUPC"));
+			result.setId(set.getLong("id"));
+			result.setProdCategory(set.getInt("prodCategory"));
+			result.setProdName(set.getString("prodName"));
+			result.setProdDescription(set.getString("prodDescription"));
+			return result;
+		}
 	}
 
 	@Override
 	public int update(Connection connection, Product product) throws SQLException, DAOException {
 		Statement statement = connection.createStatement();
-		String query = String.format("UPDATE Product SET prodCategory = %d, prodName = '%s', prodDescription = '%s', prodUPC = %d WHERE id = %d", 
-				product.getId(), product.getProdCategory(), product.getProdName(), product.getProdDescription(), product.getProdUPC());
+		String query = String.format("UPDATE Product SET prodCategory = %d, prodName = '%s', prodDescription = '%s', prodUPC = '%s' WHERE id = %d", 
+				 product.getProdCategory(), product.getProdName(), product.getProdDescription(), product.getProdUPC(), product.getId());
 		System.out.println("update query: " + query);
 		int numRows = statement.executeUpdate(query);
-		connection.commit();
 		return numRows;
 	}
 
 	@Override
 	public int delete(Connection connection, Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		Statement statement = connection.createStatement();
+		String query = String.format("DELETE FROM simple_company.Product where id=%d", id);
+		System.out.println("delete query: " + query);
+		int numRows = statement.executeUpdate(query);
+		return numRows;
 	}
 
 	@Override
