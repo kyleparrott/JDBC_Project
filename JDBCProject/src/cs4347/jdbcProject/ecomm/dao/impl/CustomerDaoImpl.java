@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import cs4347.jdbcProject.ecomm.dao.CustomerDAO;
 import cs4347.jdbcProject.ecomm.entity.Customer;
-import cs4347.jdbcProject.ecomm.entity.Purchase;
 import cs4347.jdbcProject.ecomm.util.DAOException;
 
 public class CustomerDaoImpl implements CustomerDAO
