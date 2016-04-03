@@ -35,7 +35,9 @@ public class PurchaseDaoImpl implements PurchaseDAO
 		Statement statement = connection.createStatement();
 		String query = String.format("SELECT * FROM simple_company.Purchase where id = %d", id);
 		ResultSet set = statement.executeQuery(query);		
-		set.next();
+		if (!set.next()){
+			return null;
+		} 
 		Purchase result = new Purchase();		
 		result.setCustomerID((long) set.getInt("customerId"));
 		result.setId((long) set.getInt("id"));
