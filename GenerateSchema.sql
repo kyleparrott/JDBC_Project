@@ -18,7 +18,7 @@ USE `simple_company` ;
 -- Table `simple_company`.`Product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simple_company`.`Product` (
-  `id` INT NULL AUTO_INCREMENT,
+  `id` BIGINT(12) NULL AUTO_INCREMENT,
   `prodName` VARCHAR(45) NOT NULL,
   `prodDescription` VARCHAR(200) NULL,
   `prodCategory` INT NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`Purchase` (
   `purchaseDate` DATETIME NOT NULL,
   `purchaseAmount` DECIMAL(8,2) NOT NULL,
   `customerId` INT NOT NULL,
-  `productId` INT NOT NULL,
+  `productId` BIGINT(12) NOT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   INDEX `fk_Purchase_Customer1_idx` (`customerId` ASC),
   INDEX `fk_Purchase_Product1_idx` (`productId` ASC),
