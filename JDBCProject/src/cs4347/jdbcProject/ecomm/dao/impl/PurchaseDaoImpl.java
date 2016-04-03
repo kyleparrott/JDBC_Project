@@ -59,8 +59,10 @@ public class PurchaseDaoImpl implements PurchaseDAO
 
 	@Override
 	public int delete(Connection connection, Long id) throws SQLException, DAOException {
-		
-		return 0;
+		Statement statement = connection.createStatement();
+		String query = String.format("DELETE FROM simple_company.Purchase where id = %d", id);
+		int numRows = statement.executeUpdate(query);
+		return numRows;
 	}
 
 	@Override
