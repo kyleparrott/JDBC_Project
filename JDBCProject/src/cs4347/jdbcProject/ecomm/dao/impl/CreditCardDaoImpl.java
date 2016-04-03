@@ -1,6 +1,7 @@
 package cs4347.jdbcProject.ecomm.dao.impl;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -24,13 +25,28 @@ public class CreditCardDaoImpl implements CreditCardDAO
 	@Override
 	public CreditCard retrieveForCustomerID(Connection connection, Long customerID) throws SQLException, DAOException {
 		// TODO Auto-generated method stub
-		return null;
+		Statement statement = connection.createStatement();
+		String query = String.format("SELECT * FROM simple_company.creditcard where customerID = %d", customerID);
+		ResultSet set = statement.executeQuery(query);		
+		if (!set.next()){
+			return null;
+		} 
+		CreditCard result = new CreditCard();
+		
+		result.setName(set.getString("name"));
+		result.setCcNumber(set.getString("ccNumber"));
+		result.setExpDate(set.getString("expDate"));
+		result.setSecurityCode(set.getString("securityCode"));
+		return result;
 	}
 
 	@Override
 	public void deleteForCustomerID(Connection connection, Long customerID) throws SQLException, DAOException {
 		// TODO Auto-generated method stub
-		
+		Statement statement = connection.createStatement();
+		String query = String.format("DELETE FROM simple_company.creditcard where customerID = %d", customerID);
+		int numRows = statement.executeUpdate(query);
+		return;
 	}
 
 }
