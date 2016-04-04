@@ -1,5 +1,5 @@
 -- MySQL Workbench Forward Engineering
-drop schema simple_company;
+drop database simple_company;
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -95,7 +95,6 @@ CREATE TABLE IF NOT EXISTS `simple_company`.`Address` (
   `state` VARCHAR(25) NOT NULL,
   `zipcode` VARCHAR(10) NOT NULL,
   `customerId` INT NOT NULL,
-  PRIMARY KEY (`customerId`),
   INDEX `fk_Address_Customer_idx` (`customerId` ASC),
   CONSTRAINT `fk_Address_Customer`
     FOREIGN KEY (`customerId`)

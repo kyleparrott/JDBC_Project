@@ -11,7 +11,6 @@ public class AddressDaoImpl implements AddressDAO
 
 	@Override
 	public Address create(Connection connection, Address address, Long customerID) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
 		Statement state = connection.createStatement();
 		String sql = String.format("INSERT INTO address values ('%s', '%s', '%s', '%s', '%s', %d);", address.getAddress1(), address.getAddress2(),
 				address.getCity(), address.getState(), address.getZipcode(), customerID);
@@ -41,13 +40,8 @@ public class AddressDaoImpl implements AddressDAO
 
 	@Override
 	public void deleteForCustomerID(Connection connection, Long customerID) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		
 		Statement statement = connection.createStatement();
 		String query = String.format("DELETE FROM simple_company.address where customerId = %d", customerID);
-		int numRows = statement.executeUpdate(query);
-		return;
-		
-		
+		statement.executeUpdate(query);
 	}
 }
