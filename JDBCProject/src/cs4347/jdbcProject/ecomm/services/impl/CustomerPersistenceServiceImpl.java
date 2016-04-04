@@ -88,21 +88,22 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 		Connection connection = dataSource.getConnection();
 		try {
 			connection.setAutoCommit(false);
+			
+			if (id <= 0) {
+				throw new DAOException("Id out of bounds: " + id);
+			}
 			Customer cust = customerDAO.retrieve(connection, id);
 			Long custID = cust.getId();
 
-			if (cust.getAddress() == null) {
-				throw new DAOException("Customers must include an Address instance.");
+			if (cust.getId() == null) {
+				throw new DAOException("Customers must include a proper ID.");
 			}
-			Address address = cust.getAddress();
-			addressDAO.create(connection, address, custID);
-
-			if (cust.getCreditCard() == null) {
-				throw new DAOException("Customers must include an CreditCard instance.");
-			}
-			CreditCard creditCard = cust.getCreditCard();
-			creditCardDAO.create(connection, creditCard, custID);
-
+			
+			Address address = addressDAO.retrieveForCustomerID(connection, custID);
+			cust.setAddress(address);
+			
+			CreditCard creditCard = creditCardDAO.retrieveForCustomerID(connection, custID);
+			cust.setCreditCard(creditCard);
 			connection.commit();
 			return cust;
 		}
@@ -122,25 +123,153 @@ public class CustomerPersistenceServiceImpl implements CustomerPersistenceServic
 
 	@Override
 	public int update(Customer customer) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
+		
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+
+			if (customer.getId() == null) {
+				throw new DAOException("Invalid null customer ID");
+			}
+			if (customer.getAddress() == null) {
+				throw new DAOException("Customers must include an Addres instance.");
+			}
+			if (customer.getCreditCard() == null) {
+				throw new DAOException("Customers must include an CreditCard instance.");
+			}
+			long customerID = customer.getId();
+			addressDAO.deleteForCustomerID(connection, customerID);
+			creditCardDAO.deleteForCustomerID(connection, customerID);
+			
+			addressDAO.create(connection, customer.getAddress(), customerID);
+			creditCardDAO.create(connection, customer.getCreditCard(), customerID);
+			int numRows = customerDAO.update(connection, customer);
+			
+			connection.commit();
+			return numRows;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public int delete(Long id) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return 0;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			if (id <= 0) {
+				throw new DAOException("Id out of bounds: " + id);
+			}
+			
+			int numRows = customerDAO.delete(connection, id);
+			
+			connection.commit();
+			return numRows;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 
 	@Override
 	public List<Customer> retrieveByZipCode(String zipCode) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
+		
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			
+			if (!zipCode.matches("\\d{5}-\\d{4}")) {
+				throw new DAOException("Invalid zipcode format " + zipCode);
+			}
+			
+			List<Customer> res = customerDAO.retrieveByZipCode(connection, zipCode);
+			for (Customer cust : res) {
+				CreditCard cc = creditCardDAO.retrieveForCustomerID(connection, cust.getId());
+				Address addr = addressDAO.retrieveForCustomerID(connection, cust.getId());
+				cust.setAddress(addr);
+				cust.setCreditCard(cc);
+			}
+			connection.commit();
+			return res;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
+		
 	}
 
 	@Override
 	public List<Customer> retrieveByDOB(Date startDate, Date endDate) throws SQLException, DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		CustomerDAO customerDAO = new CustomerDaoImpl();
+		AddressDAO addressDAO = new AddressDaoImpl();
+		CreditCardDAO creditCardDAO = new CreditCardDaoImpl();
+		
+		Connection connection = dataSource.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			
+			
+			if (startDate.after(endDate)) {
+				throw new DAOException("Invalid Dates, Start date must be before end date");
+			}
+			
+			List<Customer> res = customerDAO.retrieveByDOB(connection, startDate, endDate);
+			for (Customer cust : res) {
+				CreditCard cc = creditCardDAO.retrieveForCustomerID(connection, cust.getId());
+				Address addr = addressDAO.retrieveForCustomerID(connection, cust.getId());
+				cust.setAddress(addr);
+				cust.setCreditCard(cc);
+			}
+			connection.commit();
+			return res;
+		}
+		catch (Exception ex) {
+			connection.rollback();
+			throw ex;
+		}
+		finally {
+			if (connection != null) {
+				connection.setAutoCommit(true);
+			}
+			if (connection != null && !connection.isClosed()) {
+				connection.close();
+			}
+		}
 	}
 }

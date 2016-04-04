@@ -260,7 +260,6 @@ public class CustomerDaoTest
 		connection.close();
 	}
 
-	//List<Customer> retrieveByZipCode(String zipCode) throws SQLException, DAOException;
 	@Test
 	public void testRetrieveByZipCode() throws Exception 
 	{

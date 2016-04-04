@@ -7,9 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import cs4347.jdbcProject.ecomm.dao.impl.ProductDaoImpl;
-import cs4347.jdbcProject.ecomm.dao.impl.PurchaseDaoImpl;
 import cs4347.jdbcProject.ecomm.entity.Product;
-import cs4347.jdbcProject.ecomm.entity.Purchase;
 import cs4347.jdbcProject.ecomm.services.ProductPersistenceService;
 import cs4347.jdbcProject.ecomm.util.DAOException;
 
@@ -22,7 +20,6 @@ public class ProductPersistenceServiceImpl implements ProductPersistenceService
 		this.dataSource = dataSource;
 	}
 
-	//methodss
 	@Override
 	public Product create(Product product) throws SQLException, DAOException {
 		ProductDaoImpl productDAO = new ProductDaoImpl();
@@ -69,7 +66,6 @@ public class ProductPersistenceServiceImpl implements ProductPersistenceService
 			Product prod = productDAO.retrieve(connection, id);
 			
 			if (prod == null) {
-				System.out.println("null product");
 				return null;
 			} 
 			connection.commit();

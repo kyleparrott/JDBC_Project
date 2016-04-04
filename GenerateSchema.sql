@@ -71,7 +71,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `simple_company`.`CreditCard` (
   `name` VARCHAR(45) NOT NULL,
-  `ccNumber` VARCHAR(16) NOT NULL,
+  `ccNumber` VARCHAR(25) NOT NULL,
   `expDate` VARCHAR(25) NOT NULL,
   `securityCode` VARCHAR(3) NOT NULL,
   `customerId` INT NOT NULL,
